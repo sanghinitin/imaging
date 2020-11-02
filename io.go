@@ -442,3 +442,12 @@ func fixOrientation(img image.Image, o orientation) image.Image {
 	}
 	return img
 }
+
+func Get(img image.Image, file io.Writer,format string, opts ...EncodeOption) (err error) {
+	f := formatExts[strings.ToLower(format)]
+	if len(f.String()) <1 {
+		return errors.New("invalid format")
+	}
+	err = Encode(file, img, f, opts...)
+	return err
+}
