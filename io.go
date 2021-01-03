@@ -451,3 +451,16 @@ func Get(img image.Image, file io.Writer,format string, opts ...EncodeOption) (e
 	err = Encode(file, img, f, opts...)
 	return err
 }
+
+func GetWithCloser(img image.Image, file io.WriteCloser,format string, opts ...EncodeOption) (err error) {
+	f := formatExts[strings.ToLower(format)]
+	if len(f.String()) <1 {
+		return errors.New("invalid format")
+	}
+	err = Encode(file, img, f, opts...)
+	errc := file.Close()
+	if err == nil {
+		err = errc
+	}
+	return err
+}
